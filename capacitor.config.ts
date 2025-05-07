@@ -1,9 +1,10 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'remis',
-  webDir: 'www'
+  appId: 'app.web.remiseats',
+  appName: 'Remis',
+  webDir: 'www',
 };
 
 export default config;
+// remiseats.web.app
