@@ -112,23 +112,89 @@ npm i @angular/fre@18
 en main.ts configuramos firebase
 
 ```ts
-importProvidersFrom(orivudeFirebaseApp({}=>{
-  const app = intializeApp(environment.firebaseConfig);
-  if(Capacitor.isNativePlatform()){
-    initilizeFirestore(app, {
-      localCache: persistentLocalCache(),
-    });
-    initializeAuth(app, {
-      persistence: indexedDBLocalPersistnece
-    });
-  }
-  return app;
-})),
-importPrividersFrom(provideFirestore(()=> getFirestore())),
-impoerProvidersFrom(provideAuth(()=> getAuth())),
-importProvidersFrom(provideGunctions(()=>getFunctions())),
-importProvidersFrom(procideStorage(()=> getStorage())),
-importProvidersFrom(provideAnalytics(()=>getAnalytics())),
-ScreenTrackingService,
-UserTrackingService
+
+// Firebase
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import {
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  provideFirestore,
+} from '@angular/fire/firestore';
+import {
+  getAuth,
+  indexedDBLocalPersistence,
+  initializeAuth,
+  provideAuth,
+} from '@angular/fire/auth';
+import { getFunctions, provideFunctions } from '@angular/fire/functions';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import {
+  ScreenTrackingService,
+  getAnalytics,
+  provideAnalytics,
+  UserTrackingService,
+} from '@angular/fire/analytics';
+import { Capacitor } from '@capacitor/core';
+
+    // Firebase
+    provideFirebaseApp(() => {
+      const app = initializeApp(environment.firebaseConfig);
+      if (Capacitor.isNativePlatform()) {
+        initializeFirestore(app, {
+          localCache: persistentLocalCache(),
+        });
+        initializeAuth(app, {
+          persistence: indexedDBLocalPersistence,
+        });
+      }
+      return app;
+    }),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+    provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()),
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
 ```
+
+Color : #72B800 #03301D #86EE02
+Letras: raleway, montserrat
+copiamos dentro de global.scss el import de la familia de letras que elegimos en google fonts esto es para letras que consumen una api es decir solo funcionan con internet
+
+<!-- @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); -->
+
+- En variables.scss ponemos lo siguiente
+<!-- :root {
+  --ion-font-family: "Raleway", sans-serif;
+} -->
+
+- Para utilizarlo de forma local sin importar y internet se debe descargar los tipos de letras y hacer los pagos siguientes
+- Descargar la familia de letras y pegar en src/fonts descomprimir y solo mantener los tipos de letras
+- en global.scss pegar escribir lo siguiente
+  ```scss
+  // Font family local
+  @font-face {
+    font-family: "Montserrat";
+    src: url("assets/fonts/Montserrat/Montserrat-Regular.ttf");
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Montserrat";
+    src: url("assets/fonts/Montserrat/Montserrat-Bold.ttf");
+    font-style: normal;
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "Montserrat";
+    src: url("assets/fonts/Montserrat/Montserrat-Italic.ttf");
+    font-style: italic;
+  }
+  @font-face {
+    font-family: "Montserrat";
+    src: url("assets/fonts/Montserrat/Montserrat-ExtraBold.ttf");
+    font-style: normal;
+    font-weight: 800;
+  }
+  ```
