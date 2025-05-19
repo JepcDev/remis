@@ -198,3 +198,7 @@ copiamos dentro de global.scss el import de la familia de letras que elegimos en
     font-weight: 800;
   }
   ```
+  ### Organizar modelos y interfaces
+  todos los modelos iran en la carpeta models -> auth.models, firestore.models,functions.models, models
+  models contiente todos los modelos que estan en diferentes archivos, organiza todos los modelos bajo un mismo nombre,
+  reuniremos interfaces y modelos en un archivo que los relacione, si diferentes interfaces estan relacionadas entre si las crearemos en un mismo archivo, caso contrario lo pondremos en archivos diferentes.

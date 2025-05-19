@@ -6,6 +6,9 @@ import {
   IonContent,
 } from '@ionic/angular/standalone';
 
+// Independientes
+import { Models } from '../models/models';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -14,5 +17,7 @@ import {
   imports: [IonHeader, IonToolbar, IonTitle, IonContent],
 })
 export class HomePage {
+  productos: Models.Firestore.extrasQuery;
+
   constructor() {}
 }
