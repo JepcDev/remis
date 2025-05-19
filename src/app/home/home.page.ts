@@ -4,6 +4,8 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonIcon,
+  IonButton,
 } from '@ionic/angular/standalone';
 
 // Independientes
@@ -14,7 +16,7 @@ import { Models } from '../models/models';
   standalone: true,
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  imports: [IonIcon, IonHeader, IonToolbar, IonTitle, IonContent],
 })
 export class HomePage {
   productos: Models.Firestore.extrasQuery;

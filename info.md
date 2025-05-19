@@ -173,6 +173,7 @@ copiamos dentro de global.scss el import de la familia de letras que elegimos en
 - Para utilizarlo de forma local sin importar y internet se debe descargar los tipos de letras y hacer los pagos siguientes
 - Descargar la familia de letras y pegar en src/fonts descomprimir y solo mantener los tipos de letras
 - en global.scss pegar escribir lo siguiente
+
   ```scss
   // Font family local
   @font-face {
@@ -198,7 +199,24 @@ copiamos dentro de global.scss el import de la familia de letras que elegimos en
     font-weight: 800;
   }
   ```
+
   ### Organizar modelos y interfaces
+
   todos los modelos iran en la carpeta models -> auth.models, firestore.models,functions.models, models
   models contiente todos los modelos que estan en diferentes archivos, organiza todos los modelos bajo un mismo nombre,
   reuniremos interfaces y modelos en un archivo que los relacione, si diferentes interfaces estan relacionadas entre si las crearemos en un mismo archivo, caso contrario lo pondremos en archivos diferentes.
+
+  ### Iconografia
+
+  Trabajaremos con los iconos de ionic ionicons, podemos trabajar con estos iconos sin conexion. es decir los usuarios no tienen que estar conectados a internet para visualizar los iconos de la aplicacion. ya que los iconos se encuentran descargados dentro del proyecto ya que se descargaron los iconos con las dependencias del proyecto.
+  Vamos a necesitar agregar un servicio ya que desde que se usa standalone tenemos que decir a angular o a ionic que iconos vamos a usar
+  <!-- src\app\services\ionicons.service.ts -->
+
+  Injectamos los servicios en el componente padre para poder utilizarlo en toda la aplicacion app.component.ts
+  Tambien se lo puede injectar dentro del constructor
+  <!--
+   private ioniconsService: IoniconsService = inject(IoniconsService);
+  constructor() {
+    this.ioniconsService.loadAllIcons();
+  }
+  -->
