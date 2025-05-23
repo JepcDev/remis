@@ -220,3 +220,8 @@ copiamos dentro de global.scss el import de la familia de letras que elegimos en
     this.ioniconsService.loadAllIcons();
   }
   -->
+
+### Interaction service
+
+Solo creamos un nuevo servicio interaccion.service.ts para la interacion de los usuarios la app,
+probamos el servicio con home.page.ts
