@@ -50,6 +50,7 @@ bootstrapApplication(AppComponent, {
     // Firebase
     provideFirebaseApp(() => {
       const app = initializeApp(environment.firebaseConfig);
+      // esta funcion es para que funcione dentro de aios
       if (Capacitor.isNativePlatform()) {
         initializeFirestore(app, {
           localCache: persistentLocalCache(),

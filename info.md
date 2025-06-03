@@ -225,3 +225,83 @@ copiamos dentro de global.scss el import de la familia de letras que elegimos en
 
 Solo creamos un nuevo servicio interaccion.service.ts para la interacion de los usuarios la app,
 probamos el servicio con home.page.ts
+muestra toast alerts y demas mensajes segun que argumentos le enviemos a la funcion
+https://github.com/juanpablo-jpho/remis-app/tree/main
+
+### Crear base de datos en firestore
+
+Ingresamos a la consola del proyecto "Remis" y vamos a la seccion "firestore database", En el panel ingresamos a "crear base de datos"
+
+- Creamos la base de datos con los datos por defaul en "united state 5" y con los datos en produccion no en pruebas.
+
+### Integracion de firebase en el proyecto
+
+https://github.com/angular/angularfire/blob/main/docs/firestore.md#cloud-firestore
+
+- hacemos las integraciones en main y en environment de firestore lo mismo que hicimos en "Integracion del proyecto ionic con firebase"
+- instalamos angular fire -> npm install @angular/fire
+- creamos el directorio para los servicios de "firebase", creamos el archivo firestore.service.ts implementamos
+- Hacemos las pruebas necesarias con home
+
+```ts
+@Component({
+  selector: "app-home",
+  standalone: true,
+  templateUrl: "home.page.html",
+  styleUrls: ["home.page.scss"],
+  imports: [IonButton, IonIcon, IonHeader, IonToolbar, IonTitle, IonContent],
+})
+export class HomePage {
+  private interactionService: InteractionService = inject(InteractionService);
+
+  // Prueba con el servicio de firestore
+  private firestoreService: FirestoreService = inject(FirestoreService);
+
+  constructor() {
+    this.test();
+    this.testLectura();
+  }
+
+  // Añade un nuevo documento dentro de la coleccion "test"
+  async test() {
+    console.log("test()");
+    // crear documento añade id y date a la coleccions
+    await this.firestoreService.createDocument("test", { hola: "nada" });
+  }
+
+  // Esta funcion lee los dos documentos en tiempo real
+  testLectura() {
+    // leemos en tiempo real la coleccion "test" para estar pendiente de los ultimos cambios
+    this.firestoreService.getDocumentsChanges("test").subscribe((res) => {
+      console.log("testLectura ->", res);
+    });
+  }
+
+  // creamos un loading con el mensaje cargando
+  async save() {
+    const response = await this.interactionService.presentAlert("Importante", "Seguro que deseas <strong>guardar</strong>", "Cancelar", "Si");
+    await this.interactionService.showLoading("cargando..");
+    console.log("response ->", response);
+    // cerrramos el loading
+    setTimeout(() => {
+      this.interactionService.dismissLoading();
+      this.interactionService.showToast("Guardado con éxito");
+    }, 2000);
+  }
+}
+```
+
+- En la consola de firebase añadimos nuevas reglas para firebase, para que el usuario solo pueda leer y escribir dentro de la coleccion test
+
+```ts
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  // permite agregar datos en el document "test", los usuario solo pueden leer y escribir dentro de esta coleccion test
+    match /test/{id} {
+      allow read, write: if true;
+    }
+  }
+}
+```
