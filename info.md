@@ -305,3 +305,68 @@ service cloud.firestore {
   }
 }
 ```
+
+### Integracion con el modulo de storage de firebase
+
+1. El storage es para guardar archivos multimedia, firestore database no guarda archivos grandes como el de multimedia.
+
+- En la consola de firebase, creamos un nuevo "storage"
+- Crear en el nivel sin costo, crear en la misma region que se creo el modulo de firestore
+
+2. En main.ts inicializamos el proyecto con las credenciales de firebase,firestore, auth, storage.
+
+```ts
+// Firebase
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import {
+  getFirestore,
+  initializeFirestore,
+  persistentLocalCache,
+  provideFirestore,
+} from '@angular/fire/firestore';
+import {
+  getAuth,
+  indexedDBLocalPersistence,
+  initializeAuth,
+  provideAuth,
+} from '@angular/fire/auth';
+import { getFunctions, provideFunctions } from '@angular/fire/functions';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import {
+  ScreenTrackingService,
+  getAnalytics,
+  provideAnalytics,
+  UserTrackingService,
+} from '@angular/fire/analytics';
+    provideFirebaseApp(() => {
+      const app = initializeApp(environment.firebaseConfig);
+      // esta funcion es para que funcione dentro de aios
+      if (Capacitor.isNativePlatform()) {
+        initializeFirestore(app, {
+          localCache: persistentLocalCache(),
+        });
+        initializeAuth(app, {
+          persistence: indexedDBLocalPersistence,
+        });
+      }
+      return app;
+    }),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+    provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()),
+    provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+```
+
+3. Creamos un servicio (storage.service.ts) para poder usar y hacer peticiones a "storage" de firebase
+  - Estamos ocupando un servicio para que todos los componentes dentro de nuestra aplicacion si desean subir algo dentro del "modulo de almacenamiento" "storage" puedan usar este servicio para iteracturar con el modulo del storage.
+  - Si en un futuro la libreria del storage cambia nosotros no tendremos que cambiar toda la app o componentes de la app, solamente tendremos que cambiar el servicio, hacer ajustes y toda la app seguira funcionando muy bien.
+
+4. Configuramos los cors
+- Instalamos gsutil para iterar con google cloud storage
+<!-- https://cloud.google.com/storage/docs/gsutil_install?hl=es-419#windows -->
+<!-- gcloud auth login //nos logeamos en google cloud
+<!-- gsutil cors set cors.json gs://pideenremis.appspot.com -->
+- creamos cors.json
